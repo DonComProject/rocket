@@ -1,7 +1,3 @@
-Sure, here's the README translated into English:
-
----
-
 # Rocket
 
 ## Description
