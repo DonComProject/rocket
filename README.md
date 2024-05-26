@@ -38,7 +38,3 @@ Contributions are welcome! If you wish to improve Rocket or report any issues, f
 
 ## License
 This project is licensed under the MIT License. For more information, see the LICENSE file.
-
----
-
-Feel free to adjust the README according to the specific needs of the project and your team's conventions.
