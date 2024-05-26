@@ -31,23 +31,29 @@ def ask_user_info():
 
 def git_pull():
     try:
-        result = subprocess.run(["git", "pull"], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-        print(f"{COLOR_GREEN}{result.stdout}{COLOR_RESET}")
-    except subprocess.CalledProcessError as e:
-        if "Your local changes to the following files would be overwritten by merge" in e.stderr:
-            print(f"{COLOR_YELLOW}You have edited the folder. If you want to continue, we are going to force the changes so your changes will be deleted. Do you want to update knowing that you will lose your changes? (yes/no){COLOR_RESET}")
-            choice = input().strip().lower()
-            if choice == "yes":
-                try:
-                    subprocess.run(["git", "reset", "--hard"], check=True)
-                    subprocess.run(["git", "pull"], check=True)
-                    print(f"{COLOR_GREEN}Changes have been forced and repository updated.{COLOR_RESET}")
-                except subprocess.CalledProcessError as inner_e:
-                    print(f"{COLOR_YELLOW}Failed to update the repository: {inner_e}{COLOR_RESET}")
+        # Actualiza las referencias locales a las ramas remotas
+        subprocess.run(["git", "fetch"], check=True)
+
+        # Mensaje de confirmación y explicación de consecuencias
+        print(f"{COLOR_YELLOW}Atención: Esta acción sobrescribirá tus cambios locales con los cambios del repositorio remoto.{COLOR_RESET}")
+        print("Esto puede resultar en la pérdida de trabajo no guardado.")
+
+        confirmation1 = input("¿Estás seguro de continuar? (yes/no): ").strip().lower()
+
+        if confirmation1 == "yes":
+            confirmation2 = input("Por favor, confirma de nuevo. Escribe 'yes' para continuar: ").strip().lower()
+            if confirmation2 == "yes":
+                # Fusiona los cambios del repositorio remoto y sobrescribe los locales
+                subprocess.run(["git", "reset", "--hard", "origin/main"], check=True)
+                subprocess.run(["git", "pull"], check=True)
+                print(f"{COLOR_GREEN}Fusión exitosa sin confirmación del usuario.{COLOR_RESET}")
             else:
-                print(f"{COLOR_YELLOW}Update canceled by user.{COLOR_RESET}")
+                print("Fusión cancelada. Confirmación no válida.")
         else:
-            print(f"{COLOR_YELLOW}Failed to pull changes: {e.stderr}{COLOR_RESET}")
+            print("Fusión cancelada por el usuario.")
+
+    except subprocess.CalledProcessError as e:
+        print(f"{COLOR_YELLOW}Error al forzar la fusión: {e.stderr}{COLOR_RESET}")
     
 
 def main():
