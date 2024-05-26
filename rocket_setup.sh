@@ -1,13 +1,20 @@
 #!/bin/bash
 
-# Instalar Python 3
-sudo apt install python3 -y
+# Check if Python 3 is installed
+if ! command -v python3 &>/dev/null; then
+    echo "Python 3 is not installed. Installing..."
+    sudo apt install python3 -y
+    echo "Python 3 installed successfully."
+fi
 
-# Establecer alias rocket
-alias rocket="python3 $(pwd)/main.py"
+# Check if Rocket execution line is added to .bashrc file
+if ! grep -q 'python3 $(pwd)/main.py' ~/.bashrc; then
+    echo "Adding Rocket execution line to .bashrc file..."
+    echo 'python3 $(pwd)/main.py' >> ~/.bashrc
+    echo "Rocket execution line added successfully."
+fi
 
-# Establecer un alias para ejecutar el script main.py
-echo 'alias rocket="python3 $(pwd)/main.py"' >> ~/.bashrc
-
-# Actualizar el archivo .bashrc
+# Update the .bashrc file
+echo "Updating the .bashrc file..."
 source ~/.bashrc
+echo ".bashrc file updated successfully."
