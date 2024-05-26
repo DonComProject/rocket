@@ -31,6 +31,12 @@ def ask_user_info():
 
 def git_pull():
     try:
+        # Obtiene la ruta del directorio actual
+        current_dir = os.getcwd()
+        
+        # Navega al directorio del repositorio (si no estás allí)
+        os.chdir("~/doncom/.dcprograms/rocket")
+        
         # Actualiza las referencias locales a las ramas remotas
         subprocess.run(["git", "fetch"], check=True)
 
@@ -45,12 +51,14 @@ def git_pull():
             if confirmation2 == "yes":
                 # Fusiona los cambios del repositorio remoto y sobrescribe los locales
                 subprocess.run(["git", "reset", "--hard", "origin/main"], check=True)
-                subprocess.run(["git", "pull"], check=True)
                 print(f"{COLOR_GREEN}Fusión exitosa sin confirmación del usuario.{COLOR_RESET}")
             else:
                 print("Fusión cancelada. Confirmación no válida.")
         else:
             print("Fusión cancelada por el usuario.")
+
+        # Vuelve al directorio original
+        os.chdir(current_dir)
 
     except subprocess.CalledProcessError as e:
         print(f"{COLOR_YELLOW}Error al forzar la fusión: {e.stderr}{COLOR_RESET}")
