@@ -35,7 +35,7 @@ def git_pull():
         current_dir = os.getcwd()
         
         # Navega al directorio del repositorio (si no estás allí)
-        os.chdir("~/doncom/.dcprograms/rocket")
+        os.chdir("~/doncom/.dcprograms/rocket/")
         
         # Actualiza las referencias locales a las ramas remotas
         subprocess.run(["git", "fetch"], check=True)
