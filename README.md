@@ -23,6 +23,11 @@ Rocket is a command-line tool (CLI) designed to simplify the creation and manage
     ```
 
 ## 🎈 Usage
+Without `./rocket_setup.sh`
+```bash
+python3 main.py
+```
+
 After installation and configuration, you can use Rocket by executing the `rocket` command followed by the desired options. For example:
 ```bash
 rocket
